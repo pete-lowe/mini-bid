@@ -1,0 +1,343 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "auth-token": {
+      "name": "auth-token",
+      "in": "header",
+      "description": "Enter your auth token"
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/register": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/items/{_id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/items/condition/{item_condition}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "item_condition",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/items/add_item": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "item_name": {
+                  "example": "any"
+                },
+                "item_condition": {
+                  "example": "any"
+                },
+                "item_description": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/users/set_admin/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auctions/active": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auctions/closed": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auctions/cancelled": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "minibid",
+  "version": "1.0.0",
+  "description": "Online auction tool",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Pete Lowe",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.6.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.2",
+    "nodemon": "^2.0.15",
+    "swagger-autogen": "^2.19.0",
+    "swagger-ui-express": "^4.3.0"
+  }
+}
