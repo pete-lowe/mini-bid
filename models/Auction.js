@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 var ObjectId = require('mongodb').ObjectId
 
-const bidHistorySchema = mongoose.Schema({
+const bidSchema = mongoose.Schema({
     _id: {
         type:ObjectId,
         require:true
@@ -10,17 +10,17 @@ const bidHistorySchema = mongoose.Schema({
         type:ObjectId,
         require:true
     },
-    bid_date: {
-        type:Date,
+    bid_amount: {
+        type:Number,
         require:true
     },
-    bid_amount: {
-        type:String,
+    bid_date: {
+        type:Date,
         require:true
     }
 })
 
-const auctionSchema = mongoose.Schema({
+const auction = mongoose.Schema({
     _id: {
         type:ObjectId,
         require:true
@@ -46,15 +46,15 @@ const auctionSchema = mongoose.Schema({
         require: true
     },
     highest_bid: {
-        type:String,
+        type:Number,
         require: true
     },
     highest_bidder: {
         type:ObjectId,
     },
     bid_history: {
-        type:[bidHistorySchema]
+        type:[bidSchema]
     }
 })
 
-module.exports = mongoose.model('auctions', auctionSchema)
+module.exports = mongoose.model('auctions', auction)

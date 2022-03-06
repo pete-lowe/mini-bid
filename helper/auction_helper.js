@@ -17,4 +17,6 @@ Date.prototype.addDays = function(days) {
     return date
 }
 
+
 module.exports.itemInActiveAuction = itemInActiveAuction
+

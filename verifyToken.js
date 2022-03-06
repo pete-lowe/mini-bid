@@ -1,7 +1,12 @@
 const { send } = require('express/lib/response')
 const jsonwebtoken = require('jsonwebtoken')
 
-function auth(req,res,next) {
+
+//Verification of JWT obtained following a login by user
+
+//Returns 401 - unauthenticated if token not present or invalid
+
+function authenticate(req, res, next) {
     const token = req.header('auth-token')
     if(!token) {
         return res.status(401).send({message:'Access denied - please log in or register'})
@@ -15,4 +20,4 @@ function auth(req,res,next) {
     }
 }
 
-module.exports = auth
+module.exports = authenticate

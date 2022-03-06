@@ -8,4 +8,12 @@ const startAuctionValidation = (data) => {
     return schemaValidation.validate(data)
 }
 
+const postBidValidation = (data) => {
+    const schemaValidation = joi.object({
+        bid_amount: joi.number().required().min(0).max(Number.MAX_SAFE_INTEGER)
+    })
+    return schemaValidation.validate(data)
+}
+
 module.exports.startAuctionValidation = startAuctionValidation
+module.exports.postBidValidation = postBidValidation

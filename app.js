@@ -8,8 +8,6 @@ require('dotenv/config')
 // const sgMail = require('@sendgrid/mail')
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-
-
 // const msg = {
 //     to: 'petemlowe@gmail.com', // Change to your recipient
 //     from: 'plowe03@student.bbk.ac.uk', // Change to your verified sender
@@ -41,9 +39,6 @@ app.use('/api/users', usersRoute)
 const auctionsRoute = require('./routes/auctions')
 app.use('/api/auctions', auctionsRoute)
 
-const bidRoute = require('./routes/bid')
-app.use('/api/bid', bidRoute)
-
 const auth = require('./verifyToken')
 
 app.get('/', (req,res)=>{
@@ -52,11 +47,15 @@ app.get('/', (req,res)=>{
 })
 
 
-mongoose.connect(process.env.DB_CONNECTOR, ()=>{
+mongoose.connect(process.env.DB_CONNECTOR, () => {
     console.log('Your mongoDB connector is on...')
 })
 
 
-app.listen(3000, ()=>{
+app.listen(3000, () => {
+
+    
+
+
     console.log('Your server is up and running...')
 })

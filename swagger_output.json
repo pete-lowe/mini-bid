@@ -10,13 +10,6 @@
   "schemes": [
     "http"
   ],
-  "securityDefinitions": {
-    "auth-token": {
-      "name": "auth-token",
-      "in": "header",
-      "description": "Enter your auth token"
-    }
-  },
   "paths": {
     "/": {
       "get": {
@@ -206,6 +199,9 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
           }
@@ -235,26 +231,20 @@
         }
       }
     },
-    "/api/users/set_admin/": {
+    "/api/users/set_admin/{_id}": {
       "post": {
         "description": "",
         "parameters": [
           {
-            "name": "auth-token",
-            "in": "header",
+            "name": "_id",
+            "in": "path",
+            "required": true,
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -320,6 +310,114 @@
       "get": {
         "description": "",
         "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auctions/start_auction": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "item_id": {
+                  "example": "any"
+                },
+                "auction_duration": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auctions/{auction_id}/post_bid": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auction_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "bid_amount": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auctions/{auction_id}/cancel_auction": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auction_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "auth-token",
             "in": "header",

@@ -9,4 +9,5 @@ const itemConditionValidation = (data) => {
     return schemaValidation.validate(data)
 }
 
+
 module.exports.itemConditionValidation = itemConditionValidation

@@ -5,7 +5,7 @@ var conditions = {
     values: ['new', 'used']
   , message: 'You have entered an incorrect item_condition, the possible values are \'new\' and \'used\'.'
   }
-
+  
 const itemSchema = mongoose.Schema({
     _id:{
         type:ObjectId,
