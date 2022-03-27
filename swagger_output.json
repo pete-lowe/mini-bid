@@ -82,6 +82,29 @@
         }
       }
     },
+    "/api/items/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "auth-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/items/{_id}": {
       "get": {
         "description": "",
@@ -306,10 +329,16 @@
         }
       }
     },
-    "/api/auctions/cancelled": {
+    "/api/auctions/{auction_id}/bid_history": {
       "get": {
         "description": "",
         "parameters": [
+          {
+            "name": "auction_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "auth-token",
             "in": "header",
@@ -347,7 +376,7 @@
                 "item_id": {
                   "example": "any"
                 },
-                "auction_duration": {
+                "auction_end_date": {
                   "example": "any"
                 }
               }
@@ -393,35 +422,6 @@
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/api/auctions/{auction_id}/cancel_auction": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "auction_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "auth-token",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {

@@ -1,50 +1,60 @@
 const express = require('express')
-const Auction = require('../models/Auction')
-const mongoose = require('mongoose')
 const router = express.Router()
-const auction_helper = require('../helper/auction_helper')
 
+const Auction = require('../models/Auction')
+const User = require('../models/User')
 const Item = require('../models/Item')
+
+const mongoose = require('mongoose')
+const auction_helper = require('../helper/auction_helper')
 const verifyToken = require('../verifyToken')
 
 const {startAuctionValidation} = require('../validations/auction_validation');
 const {postBidValidation} = require('../validations/auction_validation');
-const { userIsItemOwner } = require('../helper/auction_helper');
-const { date } = require('joi');
 
+
+//retrieves auctions whose end date has no yet passed
 router.get('/active', verifyToken, async (req, res) => {
     try {
-        const auctions = await Auction.find({status:'active'}).exec()
+        const auctions = await Auction.find({end: {$gte: new Date()}}).exec()
         res.send(auctions)
     } catch (err) {
         res.status(400).send({message:err})
     }
 })
 
+//retrieves auctions whose end date is less than or equal to today
 router.get('/closed', verifyToken, async (req, res) => {
     try {
-        const auctions = await Auction.find({status:'closed'}).exec()
+        const auctions = await Auction.find({end: {$lte: new Date()}}).exec()
         res.send(auctions)
     } catch (err) {
         res.status(400).send({message:err})
     }
 })
 
-router.get('/cancelled', verifyToken, async (req, res) => {
+//returns bid history for a particular auction
+router.get('/:auction_id/bid_history', verifyToken, async (req, res) => {
     try {
-        const auctions = await Auction.find({status:'cancelled'}).exec()
-        res.send(auctions)
+        const auction = await Auction.findById(req.params.auction_id)
+        if (!auction) {
+            res.send({message: 'That auction does not exist'})
+            return;
+        }
+        res.send(auction.bid_history)
+        
     } catch (err) {
         res.status(400).send({message:err})
     }
 })
+
 
 router.post('/start_auction', verifyToken, async (req, res) => {
 
     const {error} = startAuctionValidation(req.body)
     if (error) {
         res.status(400).send({item_id:'Please enter a valid item id',
-        auction_duration: 'Please enter an auction duration of between 1 and 30 days'})
+        auction_end_date: "Please enter a valid date in DD/MM/YYYY format."})
         return;
     } else {
         const itemDetails = await Item.findById(req.body.item_id).exec()
@@ -66,20 +76,28 @@ router.post('/start_auction', verifyToken, async (req, res) => {
         }
     }
 
-   var today = new Date();
+    var dateSplit = req.body.auction_end_date.split('/')
+    var utcDate = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0])
+    var endDate =  new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000)
+
     const newAuction = new Auction({
         _id: new mongoose.Types.ObjectId(),
         item_id: req.body.item_id,
         status: 'active',
-        start: today,
-        end: today.addDays(req.body.auction_duration),
-        duration: req.body.auction_duration,
+        start: new Date(),
+        end: endDate,
         highest_bid: 0,
         highest_bidder: null
     })
 
+
+
     try {
         const savedAuction = await newAuction.save();
+        const updateItemToInAuction = await Item.findOneAndUpdate(
+            {_id: req.body.item_id},
+            {in_auction: true}) 
+
         res.status(200).send({
             message: 'Auction successfully started.',
             auction: newAuction
@@ -113,7 +131,8 @@ router.post('/:auction_id/post_bid', verifyToken, async (req, res) => {
         }
         const highestBid = auction.highest_bid
         const newBidAmount = req.body.bid_amount
-        if (highestBid > newBidAmount) {
+
+        if (highestBid >= newBidAmount) {
             res.status(400).send('Your bid must be higher than the current highest bid')
             return;
         }
@@ -138,28 +157,28 @@ router.post('/:auction_id/post_bid', verifyToken, async (req, res) => {
     }
 })
 
-router.post('/:auction_id/cancel_auction', verifyToken, async (req, res) => {
-    try {
-        const auction = await Auction.findById(req.params.auction_id)
-        if (!auction) {
-            res.status(400).send('That auction does not exist!')
-            return;
-        }
-        const item = await Item.findById(auction.item_id)
-        if (item.item_owner.toString() != req.user._id) {
-            res.status(400).send('You can only cancel your own auctions.')
-            return;
-        }
-        auction.status = 'cancelled'
-        await auction.save()
-        res.status(200).send({
-            message: 'Auction has been cancelled',
-            auction: auction
-        })
-    } catch (err) {
-        res.status(400).send('There has been an error')
-    }
-})
+// router.post('/:auction_id/cancel_auction', verifyToken, async (req, res) => {
+//     try {
+//         const auction = await Auction.findById(req.params.auction_id)
+//         if (!auction) {
+//             res.status(400).send('That auction does not exist!')
+//             return;
+//         }
+//         const user = await User.findOne({_id: req.user._id})
+//         if (!user.is_admin) {
+//         res.status(400).send('Only admins can cancel auctions')
+//         return;
+//         }
+//         auction.status = 'cancelled'
+//         await auction.save()
+//         res.status(200).send({
+//             message: 'Auction has been cancelled',
+//             auction: auction
+//         })
+//     } catch (err) {
+//         res.status(400).send('There has been an error')
+//     }
+// })
 
 
 module.exports = router

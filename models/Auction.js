@@ -29,10 +29,6 @@ const auction = mongoose.Schema({
         type:String,
         require:true
     },
-    status: {
-        type:String, enum: ['active', 'closed', 'cancelled'],
-        require:true
-    },
     start: {
         type:Date,
         require:true

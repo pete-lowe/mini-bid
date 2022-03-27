@@ -9,5 +9,13 @@ const itemConditionValidation = (data) => {
     return schemaValidation.validate(data)
 }
 
+const itemConditionValidationForSearch = (data) => {
+    const schemaValidation = joi.object({
+        item_condition: joi.string().required().valid('new', 'used'),
+    })
+    return schemaValidation.validate(data)
+}
+
 
 module.exports.itemConditionValidation = itemConditionValidation
+module.exports.itemConditionValidationForSearch = itemConditionValidationForSearch

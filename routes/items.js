@@ -6,7 +6,19 @@ var mongoose = require('mongoose');
 const Item = require('../models/Item');
 const User = require('../models/User');
 const verifyToken = require('../verifyToken')
-const {itemConditionValidation} = require('../validations/item_validation')
+const {itemConditionValidation, itemConditionValidationForSearch} = require('../validations/item_validation')
+
+router.get('/', verifyToken, async (req, res) => {
+    try {
+        const items = await Item.find()
+        if (!items) {
+            res.send('There are no items in the system')
+        }
+        res.send(items)
+    } catch (err) {
+        res.status(400).send({message:err})
+    }
+})
 
 router.get('/:_id', verifyToken, async (req, res) => {
     try {
@@ -21,6 +33,13 @@ router.get('/:_id', verifyToken, async (req, res) => {
 })
 
 router.get('/condition/:item_condition', verifyToken, async (req, res) => {
+
+   const {error} = itemConditionValidationForSearch(req.params)
+   if (error) {
+    res.status(400).send({item_condition: 'Valid item conditions are \'new\' and \'used\''})
+    return;
+   }
+
     try {
         const items = await Item.find({item_condition: req.params.item_condition})
         res.send(items)

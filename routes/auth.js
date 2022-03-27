@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 
 var mongoose = require('mongoose');
-var id = new mongoose.Types.ObjectId();
 
 const User = require('../models/User')
 const {registerValidation,loginValidation} = require('../validations/user_validation')
@@ -19,13 +18,13 @@ router.post('/register', async(req,res)=>{
     }
 
     const userExists = await User.findOne({email:req.body.email})
-    if(userExists){
+    if (userExists) {
         return res.status(400).send({message:'User already exists'})
     }
 
     const salt = await bcryptjs.genSalt(5)
     const hashedPassword = await bcryptjs.hash(req.body.password,salt)
-
+    var id = new mongoose.Types.ObjectId();
     const user = new User({
         _id: id,
         username:req.body.username,
@@ -37,6 +36,7 @@ router.post('/register', async(req,res)=>{
     try {
         const savedUser = await user.save()
         res.send(savedUser)
+        console.log('User saved' + savedUser)
     } catch(err) {
         res.status(400).send({message:err})
     }
