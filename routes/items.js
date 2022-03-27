@@ -5,9 +5,12 @@ var mongoose = require('mongoose');
 
 const Item = require('../models/Item');
 const User = require('../models/User');
+
 const verifyToken = require('../helper/verifyToken')
 const {itemConditionValidation, itemConditionValidationForSearch} = require('../validations/item_validation')
 
+
+//get all items
 router.get('/', verifyToken, async (req, res) => {
     try {
         const items = await Item.find()
@@ -21,6 +24,7 @@ router.get('/', verifyToken, async (req, res) => {
     }
 })
 
+//get specific item details based on item unqiue id
 router.get('/:_id', verifyToken, async (req, res) => {
     try {
         const items = await Item.findById(req.params._id)
@@ -33,8 +37,8 @@ router.get('/:_id', verifyToken, async (req, res) => {
     }
 })
 
+//get all items of a particular condition 
 router.get('/condition/:item_condition', verifyToken, async (req, res) => {
-
    const {error} = itemConditionValidationForSearch(req.params)
    if (error) {
     res.status(400).send({item_condition: 'Valid item conditions are \'new\' and \'used\''})
@@ -49,6 +53,7 @@ router.get('/condition/:item_condition', verifyToken, async (req, res) => {
     }
 })
 
+//delete an item based on specific item id. Requires admin flag authentication.
 router.delete('/:_id', verifyToken, async (req, res) => {
     const user = await User.findOne({_id: req.user._id})
     try {
@@ -64,8 +69,8 @@ router.delete('/:_id', verifyToken, async (req, res) => {
     }
 } )
 
+//add a new item to the system
 router.post('/add_item', verifyToken, async (req, res) => {
-
     const user = await User.findOne({_id: req.user._id})
     var id = new mongoose.Types.ObjectId();
 

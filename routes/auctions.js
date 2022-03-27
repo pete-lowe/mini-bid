@@ -48,9 +48,8 @@ router.get('/:auction_id/bid_history', verifyToken, async (req, res) => {
     }
 })
 
-
+//create a new auction 
 router.post('/start_auction', verifyToken, async (req, res) => {
-
     const {error} = startAuctionValidation(req.body)
     if (error) {
         res.status(400).send({item_id:'Please enter a valid item id',
@@ -89,9 +88,6 @@ router.post('/start_auction', verifyToken, async (req, res) => {
         highest_bid: 0,
         highest_bidder: null
     })
-
-
-
     try {
         const savedAuction = await newAuction.save();
         const updateItemToInAuction = await Item.findOneAndUpdate(
@@ -107,7 +103,7 @@ router.post('/start_auction', verifyToken, async (req, res) => {
     }
 })
 
-
+//post a bid in an active auction
 router.post('/:auction_id/post_bid', verifyToken, async (req, res) => {
     const {error} = postBidValidation(req.body)
     if (error) {

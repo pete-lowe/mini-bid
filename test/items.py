@@ -74,7 +74,7 @@ def delete_item_by_id_failure_when_not_admin(item_id: str) -> json:
     auth = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjM2MTEyOTUzNjlkODBkZThhZTFjZDgiLCJpYXQiOjE2NDgzMzE5MTR9.HtJ3zMVT9Gx3iYFcVchhOwKnqkjpAPt4NliCo06FgBY'
     response = requests.delete(base_url + f'/api/items/{item_id}', headers={'auth-token': auth})
     sleep(0.5)
-    if response.status_code == 400:
+    if response.status_code == 401:
         print(f'Item with id {item_id} cannot be delete by a non admin user - test passed')
         response_json = json.loads(response.text)
         return response_json

@@ -9,7 +9,7 @@ const {registerValidation,loginValidation} = require('../validations/user_valida
 const bcryptjs = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 
-
+// register a new user in the system
 router.post('/register', async(req,res)=>{
 
     const {error} = registerValidation(req.body)
@@ -42,8 +42,8 @@ router.post('/register', async(req,res)=>{
     
 })
 
+//authenticate a user returning a JWT
 router.post('/login', async(req,res)=>{
-
     const {error} = loginValidation(req.body)
     if (error) {
         return res.status(400).send({message:error['details'][0]['message']})
