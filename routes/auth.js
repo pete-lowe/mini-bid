@@ -36,7 +36,6 @@ router.post('/register', async(req,res)=>{
     try {
         const savedUser = await user.save()
         res.send(savedUser)
-        console.log('User saved' + savedUser)
     } catch(err) {
         res.status(400).send({message:err})
     }
@@ -57,7 +56,7 @@ router.post('/login', async(req,res)=>{
     
     const passwordValidation = await bcryptjs.compare(req.body.password,user.password)
     if(!passwordValidation){
-        return res.status(400).send({message:'Password is wrong'})
+        return res.status(400).send({message:'Password is incorrect'})
     }
     
     // Generate an auth-token

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const User = require('../models/User')
-const verifyToken = require('../verifyToken')
+const verifyToken = require('../helper/verifyToken')
 
 // returns basic information to an authenticated non admin user or all information other than password to admin user.
 router.get('/', verifyToken, async (req, res) => {

@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 
 const Item = require('../models/Item');
 const User = require('../models/User');
-const verifyToken = require('../verifyToken')
+const verifyToken = require('../helper/verifyToken')
 const {itemConditionValidation, itemConditionValidationForSearch} = require('../validations/item_validation')
 
 router.get('/', verifyToken, async (req, res) => {

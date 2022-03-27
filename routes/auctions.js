@@ -7,7 +7,7 @@ const Item = require('../models/Item')
 
 const mongoose = require('mongoose')
 const auction_helper = require('../helper/auction_helper')
-const verifyToken = require('../verifyToken')
+const verifyToken = require('../helper/verifyToken')
 
 const {startAuctionValidation} = require('../validations/auction_validation');
 const {postBidValidation} = require('../validations/auction_validation');
