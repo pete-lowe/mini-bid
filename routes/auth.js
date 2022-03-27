@@ -56,7 +56,7 @@ router.post('/login', async(req,res)=>{
     
     const passwordValidation = await bcryptjs.compare(req.body.password,user.password)
     if(!passwordValidation){
-        return res.status(400).send({message:'Password is incorrect'})
+        return res.status(401).send({message:'Password is incorrect'})
     }
     
     // Generate an auth-token

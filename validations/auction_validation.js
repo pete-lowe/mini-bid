@@ -3,7 +3,7 @@ const joi = require('joi')
 const startAuctionValidation = (data) => {
     const schemaValidation = joi.object({
         item_id: joi.string().required().max(24),
-        auction_end_date: joi.string().required(),
+        auction_end_date: joi.date().format('DD-MM-YYYY'),
     })
     return schemaValidation.validate(data)
 }

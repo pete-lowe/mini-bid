@@ -27,7 +27,7 @@ http://localhost:3000/doc/
 ### Testing
 ------------------
 
-There is a small set of automated tests written in python which carry out functional checks of the end points. These are located in the following folder:
+There is a small set of automated tests written in python which carry out functional checks of the API end points. These are located in the following folder:
 
 ```
 \test

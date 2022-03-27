@@ -12,9 +12,10 @@ router.get('/', verifyToken, async (req, res) => {
     try {
         const items = await Item.find()
         if (!items) {
-            res.send('There are no items in the system')
+            res.status(404).send('There are no items in the system')
+            
         }
-        res.send(items)
+        res.status(200).send(items)
     } catch (err) {
         res.status(400).send({message:err})
     }
@@ -24,9 +25,9 @@ router.get('/:_id', verifyToken, async (req, res) => {
     try {
         const items = await Item.findById(req.params._id)
         if (!items) {
-            res.send('That item does not exist')
+            res.status(404).send('That item does not exist')
         }
-        res.send(items)
+        res.status(200).send(items)
     } catch (err) {
         res.status(400).send({message:err})
     }
@@ -42,7 +43,7 @@ router.get('/condition/:item_condition', verifyToken, async (req, res) => {
 
     try {
         const items = await Item.find({item_condition: req.params.item_condition})
-        res.send(items)
+        res.status(200).send(items)
     } catch (err) {
         res.status(400).send({message:err})
     }
@@ -53,10 +54,10 @@ router.delete('/:_id', verifyToken, async (req, res) => {
     try {
         if (user.is_admin) {
             const itemToDelete = await Item.deleteOne({_id: req.params._id})
-            res.send({message: 'item successfully deleted'})
+            res.status(200).send({message: 'item successfully deleted'})
 
         } else {
-            res.status(400).send({message: 'Only administrators can delete items.'})
+            res.status(401).send({message: 'Only administrators can delete items.'})
         }
     } catch (err) {
         res.status(400).send({message:err})
@@ -84,7 +85,7 @@ router.post('/add_item', verifyToken, async (req, res) => {
             res.status(400).send({message:'The options for item_condition are \'new\' and \'used\'.'})
         } else {
             const itemToSave = await item.save()
-            res.send({message:'Item added successfully',
+            res.status(200).send({message:'Item added successfully',
                       item: item})
         }
     } catch (err) {

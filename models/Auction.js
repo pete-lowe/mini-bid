@@ -37,10 +37,6 @@ const auction = mongoose.Schema({
         type:Date,
         require:true
     },
-    duration: {
-        type:Number,
-        require: true
-    },
     highest_bid: {
         type:Number,
         require: true
